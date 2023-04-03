@@ -1,5 +1,33 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);
-@charset "UTF-8"; /*!
+@charset "UTF-8";
+@font-face {
+  font-family: "PT Sans";
+  font-weight: bold;
+  font-style: italic;
+  font-display: swap;
+  src: url(../fonts/PTSans-BoldItalic.woff2?32331f089642f543c60124dca2936c6c) format("woff2"), url(../fonts/PTSans-BoldItalic.woff?b6d9449ad0b2232fca3608455538e231) format("woff");
+}
+@font-face {
+  font-family: "PT Sans";
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+  src: url(../fonts/PTSans-Bold.woff2?f3941d80ebc54ad11d8b4470eea20382) format("woff2"), url(../fonts/PTSans-Bold.woff?d352e17c050689652441667247d9ce77) format("woff");
+}
+@font-face {
+  font-family: "PT Sans";
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+  src: url(../fonts/PTSans-Italic.woff2?bb51baf31adec8e6f40d80e839f01c74) format("woff2"), url(../fonts/PTSans-Italic.woff?0711c88a700937926750d6cc93cd4b16) format("woff");
+}
+@font-face {
+  font-family: "PT Sans";
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  src: url(../fonts/PTSans-Regular.woff2?9585da7aa08dd128457b350836178821) format("woff2"), url(../fonts/PTSans-Regular.woff?07452396d2e22557fe3da6da66ce26e0) format("woff");
+}
+/*!
  * Bootstrap  v5.2.3 (https://getbootstrap.com/)
  * Copyright 2011-2022 The Bootstrap Authors
  * Copyright 2011-2022 Twitter, Inc.
@@ -49,7 +77,7 @@
   --bs-black-rgb: 0, 0, 0;
   --bs-body-color-rgb: 33, 37, 41;
   --bs-body-bg-rgb: 248, 250, 252;
-  --bs-font-sans-serif: "Nunito", sans-serif;
+  --bs-font-sans-serif: "PT Sans", sans-serif;
   --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
   --bs-body-font-family: var(--bs-font-sans-serif);
