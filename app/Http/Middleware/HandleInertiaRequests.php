@@ -47,6 +47,8 @@ class HandleInertiaRequests extends Middleware
             'register' => __('content.register')
         ];
 
+        $data['lang.datatables'] = __('datatables');
+
         $data['auth.user'] = $request->user()
             ? $request->user()->only('id', 'name', 'email')
             : null;
