@@ -13,6 +13,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Auth::routes([
+    'confirm' => false,
+    'reset' => false
+]);
+
+// Guest users
+Route::middleware('guest')->group(function () {
+    // Overwriting login and register forms
+    Route::inertia('/', 'Auth/Login')->name('login');
+    Route::inertia('/login', 'Auth/Login')->name('login');
+    Route::inertia('/register', 'Auth/Register')->name('register');
+});
+
+// Auth users
+Route::middleware('auth')->group(function () {
+    // Home
+    Route::inertia('/home', 'Home');
 });

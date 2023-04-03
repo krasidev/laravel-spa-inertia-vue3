@@ -1,9 +1,14 @@
 require('./bootstrap');
-import { createApp } from 'vue';
+import { createApp, h } from 'vue';
+import { createInertiaApp, usePage } from '@inertiajs/vue3';
 
-const app = createApp({});
-
-import ExampleComponent from './components/ExampleComponent.vue';
-app.component('example-component', ExampleComponent);
-
-app.mount('#app');
+createInertiaApp({
+    title: (title) => usePage().props.app.name + (title ? ' - ' + title : ''),
+    resolve: name => require(`./Pages/${name}`),
+    setup({ el, App, props, plugin }) {
+        createApp({ render: () => h(App, props) })
+            .use(plugin)
+            .mixin({ methods: {route} })
+            .mount(el)
+    },
+});
