@@ -22966,6 +22966,20 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     usePage: _inertiajs_vue3__WEBPACK_IMPORTED_MODULE_0__.usePage,
     Link: _inertiajs_vue3__WEBPACK_IMPORTED_MODULE_0__.Link
+  },
+  mounted: function mounted() {
+    if (this.$page.props.flash.success) {
+      this.$swal({
+        icon: 'success',
+        title: this.$page.props.flash.success.title,
+        text: this.$page.props.flash.success.text,
+        confirmButtonText: this.$page.props.lang.messages.success['confirm-button-text'],
+        buttonsStyling: false,
+        customClass: {
+          confirmButton: 'swal2-styled btn btn-primary'
+        }
+      });
+    }
   }
 });
 

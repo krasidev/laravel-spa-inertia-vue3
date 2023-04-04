@@ -53,6 +53,9 @@ class HandleInertiaRequests extends Middleware
             ? $request->user()->only('id', 'name', 'email')
             : null;
 
+        $data['lang.messages.success'] = __('messages.success');
+        $data['flash.success'] = $request->session()->get('success');
+
         return array_merge(parent::share($request), $data);
     }
 }

@@ -59,6 +59,20 @@
         components: {
             usePage,
             Link
+        },
+        mounted () {
+            if (this.$page.props.flash.success) {
+                this.$swal({
+                    icon: 'success',
+                    title: this.$page.props.flash.success.title,
+                    text: this.$page.props.flash.success.text,
+                    confirmButtonText: this.$page.props.lang.messages.success['confirm-button-text'],
+                    buttonsStyling: false,
+                    customClass: {
+                        confirmButton: 'swal2-styled btn btn-primary'
+                    }
+                });
+            }
         }
     }
 </script>
