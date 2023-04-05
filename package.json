@@ -23,6 +23,7 @@
         "sass": "^1.32.11",
         "sass-loader": "^11.0.1",
         "vue": "^3.2.36",
-        "vue-loader": "^17.0.1"
+        "vue-loader": "^17.0.1",
+        "vue-sweetalert2": "^5.0.5"
     }
 }
