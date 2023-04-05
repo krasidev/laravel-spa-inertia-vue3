@@ -12,7 +12,22 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav me-auto">
-                    
+                    <template v-if="$page.props.auth.user">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ $page.props.lang.menu.users.text }}
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-start m-0">
+                                <Link :href="route('users.index')" class="dropdown-item" :class="{ 'active': $page.component === 'Users/Index' }">
+                                    {{ $page.props.lang.menu.users.index }}
+                                </Link>
+                                <Link :href="route('users.create')" class="dropdown-item" :class="{ 'active': $page.component === 'Users/Create' }">
+                                    {{ $page.props.lang.menu.users.create }}
+                                </Link>
+                            </div>
+                        </li>
+                    </template>
                 </ul>
 
                 <!-- Right Side Of Navbar -->
