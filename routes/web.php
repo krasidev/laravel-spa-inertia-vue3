@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,11 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     // Home
     Route::inertia('/home', 'Home');
+
+    // Profile
+    Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
 
     // Users
     Route::resource('users', UserController::class)->except('show');

@@ -1,6 +1,11 @@
 <?php
 
 return [
+    'profile' => [
+        'edit' => 'Profile',
+        'edit-password' => 'Edit password',
+        'logout' => 'Logout'
+    ],
     'users' => [
         'text' => 'Users',
         'index' => 'List Users',

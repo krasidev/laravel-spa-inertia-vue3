@@ -39,7 +39,15 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end m-0" aria-labelledby="navbarDropdown">
-                                <Link :href="route('logout')" method="post" as="button" type="button" class="dropdown-item">{{ $page.props.lang.content.login.buttons.logout }}</Link>
+                                <Link :href="route('profile.edit')" class="dropdown-item">
+                                    <i class="fas fa-user text-dark me-1"></i>
+                                    {{ $page.props.lang.menu.profile.edit }}
+                                </Link>
+                                <hr class="dropdown-divider">
+                                <Link :href="route('logout')" method="post" as="button" type="button" class="dropdown-item">
+                                    <i class="fas fa-power-off text-dark me-1"></i>
+                                    {{ $page.props.lang.menu.profile.logout }}
+                                </Link>
                             </div>
                         </li>
                     </template>
