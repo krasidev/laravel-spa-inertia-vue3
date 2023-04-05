@@ -21,13 +21,18 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
+        $users = User::query();
+
+        if ($filter['trashed'] = $request->get('trashed', 0)) {
+            $users->onlyTrashed();
+        }
 
         return Inertia::render('Users/Index', [
             'lang.datatables' => __('datatables'),
-            'users' => $users
+            'filter' => $filter,
+            'users' => $users->get()
         ]);
     }
 
@@ -102,13 +107,56 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
         if ($user->id != auth()->user()->id) {
             $user->delete();
+
+            return redirect()->route('users.index')
+                ->with('success', [
+                    'title' => __('messages.users.delete_success.title'),
+                    'text' => __('messages.users.delete_success.text'),
+                ]);
         }
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore(Request $request, $id)
+    {
+        User::withTrashed()->findOrFail($id)->restore();
+
+        return redirect()->route('users.index', $request->query())
+            ->with('success', [
+                'title' => __('messages.users.restore_success.title'),
+                'text' => __('messages.users.restore_success.text'),
+            ]);
+    }
+
+    /**
+     * Force delete the specified resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function forceDelete(Request $request, $id)
+    {
+        User::withTrashed()->findOrFail($id)->forceDelete();
+
+        return redirect()->route('users.index', $request->query())
+            ->with('success', [
+                'title' => __('messages.users.delete_success.title'),
+                'text' => __('messages.users.delete_success.text'),
+            ]);
     }
 }

@@ -34,4 +34,6 @@ Route::middleware('auth')->group(function () {
 
     // Users
     Route::resource('users', UserController::class)->except('show');
+    Route::patch('users/{id}/restore', [UserController::class, 'restore'])->name('users.restore');
+    Route::delete('users/{id}/force-delete', [UserController::class, 'forceDelete'])->name('users.force-delete');
 });

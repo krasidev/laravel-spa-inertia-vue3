@@ -12,6 +12,14 @@ return [
         'update_success' => [
             'title' => '',
             'text' => 'User updated successfully!'
-        ]
+        ],
+        'delete_success' => [
+            'title' => '',
+            'text' => 'User deleted successfully!'
+        ],
+        'restore_success' => [
+            'title' => '',
+            'text' => 'User restored successfully!'
+        ],
     ]
 ];
