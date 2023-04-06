@@ -5,11 +5,11 @@
         </Head>
         <div id="accordionProfile" class="accordion shadow-sm">
             <div class="accordion-item bg-white">
-                <div class="accordion-header accordion-button bg-transparent px-3 py-2" data-bs-toggle="collapse" data-bs-target="#collapseUpdate" aria-expanded="true" aria-controls="collapseUpdate">
+                <div class="accordion-header accordion-button bg-transparent px-3 py-2" :class="{ 'collapsed': errors.password || errors.current_password }" data-bs-toggle="collapse" data-bs-target="#collapseUpdate" :aria-expanded="(errors.password || errors.current_password ? 'false' : 'true')" aria-controls="collapseUpdate">
                     {{ lang.menu.profile.edit }}
                 </div>
 
-                <div id="collapseUpdate" class="accordion-collapse collapse show" data-bs-parent="#accordionProfile">
+                <div id="collapseUpdate" class="accordion-collapse collapse" :class="{ 'show': !(errors.password || errors.current_password) }" data-bs-parent="#accordionProfile">
                     <div class="accordion-body p-3">
                         <form @submit.prevent="update">
                             <input type="hidden" name="_token" :value="$page.props.csrf_token">
@@ -34,6 +34,19 @@
                                         <strong>{{ errors.email }}</strong>
                                     </div>
                                 </div>
+
+                                <div class="col-12 col-sm-4 mb-3">
+                                    <label for="role" class="form-label">{{ lang.content.profile.labels.role }}: <span class="text-danger">*</span></label>
+
+                                    <select v-model="user.role" id="role" class="form-control" :class="{ 'is-invalid': errors.role }">
+                                        <option value="">{{ lang.content.profile.placeholders.role }}</option>
+                                        <option v-for="role in roles" :value="role.id">{{ role.name }}</option>
+                                    </select>
+
+                                    <div class="invalid-feedback" v-if="errors.role">
+                                        <strong>{{ errors.role }}</strong>
+                                    </div>
+                                </div>
                             </div>
 
                             <hr class="mt-0">
@@ -44,11 +57,11 @@
                 </div>
             </div>
             <div class="accordion-item bg-white">
-                <div class="accordion-header accordion-button collapsed bg-transparent px-3 py-2" data-bs-toggle="collapse" data-bs-target="#collapseUpdatePassword" aria-expanded="false" aria-controls="collapseUpdatePassword">
+                <div class="accordion-header accordion-button bg-transparent px-3 py-2" data-bs-toggle="collapse" :class="{ 'collapsed': !(errors.password || errors.current_password) }" data-bs-target="#collapseUpdatePassword" :aria-expanded="(errors.password || errors.current_password ? 'true' : 'false')" aria-controls="collapseUpdatePassword">
                     {{ lang.menu.profile['edit-password'] }}
                 </div>
 
-                <div id="collapseUpdatePassword" class="accordion-collapse collapse" data-bs-parent="#accordionProfile">
+                <div id="collapseUpdatePassword" class="accordion-collapse collapse" :class="{ 'show': errors.password || errors.current_password }" data-bs-parent="#accordionProfile">
                     <div class="accordion-body p-3">
                         <form @submit.prevent="updatePassword">
                             <input type="hidden" name="_token" :value="$page.props.csrf_token">
@@ -103,6 +116,7 @@
         },
         props: {
             lang: Object,
+            roles: Object,
             user: Object,
             errors: Object,
         },
