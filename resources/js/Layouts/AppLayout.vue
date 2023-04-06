@@ -73,6 +73,21 @@
 
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="text-uppercase">{{ $page.props.currentLocale }}</span>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-start m-0">
+                            <template v-for="(properties, localeCode) in $page.props.localesOrder">
+                                <Link :href="properties.url" class="dropdown-item" :class="{ 'disabled': $page.props.currentLocale == localeCode }">
+                                    {{ properties.native }}
+                                    (<span class="text-uppercase">{{ localeCode }}</span>)
+                                </Link>
+                            </template>
+                        </div>
+                    </li>
+
                     <template v-if="$page.props.auth.user">
                         <li class="nav-item dropdown">
                             <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
