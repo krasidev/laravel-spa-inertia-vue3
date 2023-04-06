@@ -57,6 +57,14 @@ class HandleInertiaRequests extends Middleware
         $data['lang.messages.success'] = __('messages.success');
         $data['flash.success'] = $request->session()->get('success');
 
+        $data['currentLocale'] = \LaravelLocalization::getCurrentLocale();
+        $getLocalesOrder = \LaravelLocalization::getLocalesOrder();
+        $data['localesOrder'] = collect($getLocalesOrder)->map(function ($properties, $localeCode) {
+            return array_merge($properties, [
+                'url' => \LaravelLocalization::getLocalizedURL($localeCode, null, [], true)
+            ]);
+        });
+
         return array_merge(parent::share($request), $data);
     }
 }
