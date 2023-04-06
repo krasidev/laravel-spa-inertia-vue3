@@ -27,6 +27,20 @@
                                 </Link>
                             </div>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ $page.props.lang.menu.roles.text }}
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-start m-0">
+                                <Link :href="route('roles.index')" class="dropdown-item" :class="{ 'active': $page.component === 'Roles/Index' }">
+                                    {{ $page.props.lang.menu.roles.index }}
+                                </Link>
+                                <Link :href="route('roles.create')" class="dropdown-item" :class="{ 'active': $page.component === 'Roles/Create' }">
+                                    {{ $page.props.lang.menu.roles.create }}
+                                </Link>
+                            </div>
+                        </li>
                     </template>
                 </ul>
 

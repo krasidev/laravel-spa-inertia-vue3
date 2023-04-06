@@ -31,5 +31,19 @@ return [
             'title' => '',
             'text' => 'User restored successfully!'
         ],
+    ],
+    'roles' => [
+        'store_success' => [
+            'title' => '',
+            'text' => 'Role added successfully!'
+        ],
+        'update_success' => [
+            'title' => '',
+            'text' => 'Role updated successfully!'
+        ],
+        'delete_success' => [
+            'title' => '',
+            'text' => 'Role deleted successfully!'
+        ]
     ]
 ];
