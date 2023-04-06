@@ -91,5 +91,27 @@ return [
             'store' => 'Create',
             'update' => 'Update'
         ]
+    ],
+    'permissions' => [
+        'table' => [
+            'headers' => [
+                'id' => 'ID',
+                'name' => 'Name',
+                'guard_name' => 'Guard Name',
+                'created_at' => 'Created At',
+                'updated_at' => 'Updated At',
+                'actions' => 'Actions'
+            ]
+        ],
+        'labels' => [
+            'name' => 'Name',
+            'guard_name' => 'Guard Name'
+        ],
+        'legends' => [
+            'roles' => 'Roles'
+        ],
+        'buttons' => [
+            'update' => 'Update'
+        ]
     ]
 ];

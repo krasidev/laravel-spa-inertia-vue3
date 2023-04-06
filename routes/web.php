@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -46,4 +47,7 @@ Route::middleware('auth')->group(function () {
 
     // Roles
     Route::resource('roles', RoleController::class)->except('show');
+
+    //Permissions
+    Route::resource('permissions', PermissionController::class)->only(['index', 'edit', 'update']);
 });

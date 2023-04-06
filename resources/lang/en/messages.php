@@ -45,5 +45,11 @@ return [
             'title' => '',
             'text' => 'Role deleted successfully!'
         ]
+    ],
+    'permissions' => [
+        'update_success' => [
+            'title' => '',
+            'text' => 'Permission updated successfully!'
+        ]
     ]
 ];

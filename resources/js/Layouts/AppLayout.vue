@@ -41,6 +41,17 @@
                                 </Link>
                             </div>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ $page.props.lang.menu.permissions.text }}
+                            </a>
+
+                            <div class="dropdown-menu dropdown-menu-start m-0">
+                                <Link :href="route('permissions.index')" class="dropdown-item" :class="{ 'active': $page.component === 'Permissions/Index' }">
+                                    {{ $page.props.lang.menu.permissions.index }}
+                                </Link>
+                            </div>
+                        </li>
                     </template>
                 </ul>
 
