@@ -52,6 +52,7 @@ return [
                 'id' => 'ID',
                 'name' => 'Name',
                 'email' => 'E-Mail Address',
+                'roles' => 'Role',
                 'created_at' => 'Created At',
                 'updated_at' => 'Updated At',
                 'deleted_at' => 'Deleted At',
@@ -61,8 +62,12 @@ return [
         'labels' => [
             'name' => 'Name',
             'email' => 'E-Mail Address',
+            'role' => 'Role',
             'password' => 'Password',
             'password_confirmation' => 'Confirm Password'
+        ],
+        'placeholders' => [
+            'role' => '-- Choose --'
         ],
         'buttons' => [
             'store' => 'Create',

@@ -31,6 +31,7 @@
                             <th>{{ lang.content.users.table.headers.id }}</th>
                             <th>{{ lang.content.users.table.headers.name }}</th>
                             <th>{{ lang.content.users.table.headers.email }}</th>
+                            <th>{{ lang.content.users.table.headers.roles }}</th>
                             <th>{{ lang.content.users.table.headers.created_at }}</th>
                             <th v-if="filter.trashed == 0">{{ lang.content.users.table.headers.updated_at }}</th>
                             <th v-else>{{ lang.content.users.table.headers.deleted_at }}</th>
@@ -42,6 +43,7 @@
                             <td>{{ user.id }}</td>
                             <td>{{ user.name }}</td>
                             <td>{{ user.email }}</td>
+                            <td>{{ user.roles_name }}</td>
                             <td>{{ user.created_at }}</td>
                             <td v-if="filter.trashed == 0">{{ user.updated_at }}</td>
                             <td v-else>{{ user.deleted_at }}</td>

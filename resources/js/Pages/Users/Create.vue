@@ -32,6 +32,19 @@
                         </div>
 
                         <div class="col-12 col-sm-4 mb-3">
+                            <label for="role" class="form-label">{{ lang.content.users.labels.role }}: <span class="text-danger">*</span></label>
+
+                            <select v-model="user.role" id="role" class="form-control" :class="{ 'is-invalid': errors.role }">
+                                <option value="">{{ lang.content.users.placeholders.role }}</option>
+                                <option v-for="role in roles" :value="role.id">{{ role.name }}</option>
+                            </select>
+
+                            <div class="invalid-feedback" v-if="errors.role">
+                                <strong>{{ errors.role }}</strong>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-sm-4 mb-3">
                             <label for="password" class="form-label">{{ lang.content.users.labels.password }}: <span class="text-danger">*</span></label>
 
                             <input type="password" v-model="user.password" id="password" class="form-control" :class="{ 'is-invalid': errors.password }" />
@@ -68,11 +81,14 @@
         },
         props: {
             lang: Object,
+            roles: Object,
             errors: Object
         },
         data () {
             return {
-                user: {}
+                user: {
+                    role: ''
+                }
             }
         },
         methods: {
