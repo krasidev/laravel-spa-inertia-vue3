@@ -48,7 +48,10 @@ class HandleInertiaRequests extends Middleware
         $data['lang.menu'] = __('menu');
 
         $data['auth.user'] = $request->user()
-            ? $request->user()->only('id', 'name', 'email')
+            ? array_merge($request->user()->only('id', 'name', 'email'), [
+                'roles' => $request->user()->getRoleNames(),
+                'permissions' => $request->user()->getAllPermissions()->pluck('name')
+            ])
             : null;
 
         $data['lang.messages.success'] = __('messages.success');

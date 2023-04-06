@@ -31,6 +31,7 @@
                             <th>{{ lang.content.users.table.headers.id }}</th>
                             <th>{{ lang.content.users.table.headers.name }}</th>
                             <th>{{ lang.content.users.table.headers.email }}</th>
+                            <th>{{ lang.content.users.table.headers.roles }}</th>
                             <th>{{ lang.content.users.table.headers.created_at }}</th>
                             <th v-if="filter.trashed == 0">{{ lang.content.users.table.headers.updated_at }}</th>
                             <th v-else>{{ lang.content.users.table.headers.deleted_at }}</th>
@@ -42,23 +43,30 @@
                             <td>{{ user.id }}</td>
                             <td>{{ user.name }}</td>
                             <td>{{ user.email }}</td>
+                            <td>{{ user.roles_name }}</td>
                             <td>{{ user.created_at }}</td>
                             <td v-if="filter.trashed == 0">{{ user.updated_at }}</td>
                             <td v-else>{{ user.deleted_at }}</td>
                             <td>
                                 <div v-if="user.is_trashed" class="btn-group btn-group-sm" role="group">
-                                    <DataTableLink :href="route('users.restore', {id: user.id, trashed: 1})" class="btn" action="restore">
-                                        <i class="fas fa-trash-restore text-success"></i>
-                                    </DataTableLink>
-                                    <DataTableLink :href="route('users.force-delete', {id: user.id, trashed: 1})" class="btn" action="delete">
-                                        <i class="fas fa-trash text-danger"></i>
-                                    </DataTableLink>
+                                    <template v-if="hasRoleOrPermission('admin', 'users.restore')">
+                                        <DataTableLink :href="route('users.restore', {id: user.id, trashed: 1})" class="btn" action="restore">
+                                            <i class="fas fa-trash-restore text-success"></i>
+                                        </DataTableLink>
+                                    </template>
+                                    <template v-if="hasRoleOrPermission('admin', 'users.force-delete')">
+                                        <DataTableLink :href="route('users.force-delete', {id: user.id, trashed: 1})" class="btn" action="delete">
+                                            <i class="fas fa-trash text-danger"></i>
+                                        </DataTableLink>
+                                    </template>
                                 </div>
                                 <div v-else class="btn-group btn-group-sm" role="group">
-                                    <DataTableLink :href="route('users.edit', {user: user.id})" class="btn">
-                                        <i class="fas fa-edit text-primary"></i>
-                                    </DataTableLink>
-                                    <template v-if="$page.props.auth.user && $page.props.auth.user.id != user.id">
+                                    <template v-if="hasRoleOrPermission('admin', 'users.edit')">
+                                        <DataTableLink :href="route('users.edit', {user: user.id})" class="btn">
+                                            <i class="fas fa-edit text-primary"></i>
+                                        </DataTableLink>
+                                    </template>
+                                    <template v-if="hasRoleOrPermission('admin', 'users.destroy') && $page.props.auth.user.id != user.id">
                                         <DataTableLink :href="route('users.destroy', {user: user.id})" class="btn" action="delete">
                                             <i class="fas fa-trash text-warning"></i>
                                         </DataTableLink>
@@ -78,6 +86,9 @@
     import { Head, router } from '@inertiajs/vue3';
     import DataTable from '../../Components/DataTable.vue';
     import DataTableLink from '../../Components/DataTableLink.vue';
+    import { usePermission } from '../../helpers';
+
+    const { hasRoleOrPermission } = usePermission();
 
     export default {
         components: {
@@ -85,6 +96,11 @@
             Head,
             DataTable,
             DataTableLink
+        },
+        setup () {
+            return {
+                hasRoleOrPermission
+            };
         },
         props: {
             lang: Object,

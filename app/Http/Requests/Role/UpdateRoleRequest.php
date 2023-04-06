@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Profile;
+namespace App\Http\Requests\Role;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProfileRequest extends FormRequest
+class UpdateRoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,7 @@ class UpdateProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . auth()->user()->id . ',id'],
-            'role' => ['required']
+            'name' => ['required', 'string', 'max:255', 'unique:roles,name,' . $this->role->id . ',id']
         ];
     }
 
@@ -38,9 +36,7 @@ class UpdateProfileRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => __('content.profile.labels.name'),
-            'email' => __('content.profile.labels.email'),
-            'role' => __('content.profile.labels.role')
+            'name' => __('content.roles.labels.name')
         ];
     }
 }

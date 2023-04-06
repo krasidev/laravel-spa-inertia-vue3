@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -43,7 +44,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Users/Create');
+        $roles = Role::all();
+
+        return Inertia::render('Users/Create', compact('roles'));
     }
 
     /**
@@ -54,11 +57,13 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $data = $request->only(['name', 'email', 'password']);
+        $data = $request->only(['name', 'email', 'password', 'role']);
 
         $data['password'] = Hash::make($data['password']);
 
         $user = User::create($data);
+
+        $user->assignRole($data['role']);
 
         return redirect()->route('users.index')
             ->with('success', [
@@ -75,7 +80,11 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return Inertia::render('Users/Edit', compact('user'));
+        $user->role = $user->roles->pluck('id')->first();
+
+        $roles = Role::all();
+
+        return Inertia::render('Users/Edit', compact('user', 'roles'));
     }
 
     /**
@@ -87,7 +96,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user)
     {
-        $data = $request->only(['name', 'email', 'password']);
+        $data = $request->only(['name', 'email', 'password', 'role']);
 
 		if (isset($data['password'])) {
 			$data['password'] = Hash::make($data['password']);
@@ -96,6 +105,8 @@ class UserController extends Controller
 		}
 
         $user->update($data);
+
+        $user->syncRoles([$data['role']]);
 
         return redirect()->route('users.index')
             ->with('success', [

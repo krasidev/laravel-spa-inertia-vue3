@@ -8,10 +8,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -51,10 +52,18 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $appends = ['is_trashed'];
+    protected $appends = [
+        'is_trashed',
+        'roles_name'
+    ];
 
     public function getIsTrashedAttribute()
     {
         return $this->trashed();
+    }
+
+    public function getRolesNameAttribute()
+    {
+        return $this->roles->pluck('name')->implode(', ');
     }
 }

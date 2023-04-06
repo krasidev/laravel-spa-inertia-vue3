@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Profile\UpdatePasswordProfileRequest;
 use App\Http\Requests\Profile\UpdateProfileRequest;
+use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
@@ -16,9 +17,16 @@ class ProfileController extends Controller
      */
     public function edit()
     {
+        $user = auth()->user();
+
+        $user->role = $user->roles->pluck('id')->first();
+
+        $roles = Role::all();
+
         return Inertia::render('Profile/Edit', [
             'lang.content.profile' => __('content.profile'),
-            'user' => auth()->user()->only(['name', 'email'])
+            'user' => $user->only(['name', 'email', 'role']),
+            'roles' => $roles
         ]);
     }
 
@@ -30,9 +38,13 @@ class ProfileController extends Controller
      */
     public function update(UpdateProfileRequest $request)
     {
-        $data = $request->only(['name', 'email']);
+        $data = $request->only(['name', 'email', 'role']);
 
-        auth()->user()->update($data);
+        $user = auth()->user();
+
+        $user->update($data);
+
+        $user->syncRoles([$data['role']]);
 
         return redirect()->route('profile.edit')
             ->with('success', [
@@ -51,8 +63,10 @@ class ProfileController extends Controller
     {
         $data = $request->only(['current_password', 'password']);
 
-        if (Hash::check($data['current_password'], auth()->user()->password)) {
-            auth()->user()->update([
+        $user = auth()->user();
+
+        if (Hash::check($data['current_password'], $user->password)) {
+            $user->update([
                 'password' => Hash::make($data['password'])
             ]);
         }
