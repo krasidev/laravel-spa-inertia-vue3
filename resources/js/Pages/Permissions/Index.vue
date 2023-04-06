@@ -27,9 +27,11 @@
                             <td>{{ permission.updated_at }}</td>
                             <td>
                                 <div class="btn-group btn-group-sm" role="group">
-                                    <DataTableLink :href="route('permissions.edit', {permission: permission.id})" class="btn">
-                                        <i class="fas fa-edit text-primary"></i>
-                                    </DataTableLink>
+                                    <template v-if="hasRoleOrPermission('admin', 'permissions.edit')">
+                                        <DataTableLink :href="route('permissions.edit', {permission: permission.id})" class="btn">
+                                            <i class="fas fa-edit text-primary"></i>
+                                        </DataTableLink>
+                                    </template>
                                 </div>
                             </td>
                         </tr>
@@ -45,6 +47,9 @@
     import { Head, router } from '@inertiajs/vue3';
     import DataTable from '../../Components/DataTable.vue';
     import DataTableLink from '../../Components/DataTableLink.vue';
+    import { usePermission } from '../../helpers';
+
+    const { hasRoleOrPermission } = usePermission();
 
     export default {
         components: {
@@ -52,6 +57,11 @@
             Head,
             DataTable,
             DataTableLink
+        },
+        setup () {
+            return {
+                hasRoleOrPermission
+            };
         },
         props: {
             lang: Object,

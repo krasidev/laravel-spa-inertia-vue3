@@ -13,45 +13,61 @@
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav me-auto">
                     <template v-if="$page.props.auth.user">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ $page.props.lang.menu.users.text }}
-                            </a>
+                        <template v-if="hasRoleOrPermission('admin', 'users.index') || hasRoleOrPermission('admin', 'users.create')">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ $page.props.lang.menu.users.text }}
+                                </a>
 
-                            <div class="dropdown-menu dropdown-menu-start m-0">
-                                <Link :href="route('users.index')" class="dropdown-item" :class="{ 'active': $page.component === 'Users/Index' }">
-                                    {{ $page.props.lang.menu.users.index }}
-                                </Link>
-                                <Link :href="route('users.create')" class="dropdown-item" :class="{ 'active': $page.component === 'Users/Create' }">
-                                    {{ $page.props.lang.menu.users.create }}
-                                </Link>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ $page.props.lang.menu.roles.text }}
-                            </a>
+                                <div class="dropdown-menu dropdown-menu-start m-0">
+                                    <template v-if="hasRoleOrPermission('admin', 'users.index')">
+                                        <Link :href="route('users.index')" class="dropdown-item" :class="{ 'active': $page.component === 'Users/Index' }">
+                                            {{ $page.props.lang.menu.users.index }}
+                                        </Link>
+                                    </template>
+                                    <template v-if="hasRoleOrPermission('admin', 'users.create')">
+                                        <Link :href="route('users.create')" class="dropdown-item" :class="{ 'active': $page.component === 'Users/Create' }">
+                                            {{ $page.props.lang.menu.users.create }}
+                                        </Link>
+                                    </template>
+                                </div>
+                            </li>
+                        </template>
 
-                            <div class="dropdown-menu dropdown-menu-start m-0">
-                                <Link :href="route('roles.index')" class="dropdown-item" :class="{ 'active': $page.component === 'Roles/Index' }">
-                                    {{ $page.props.lang.menu.roles.index }}
-                                </Link>
-                                <Link :href="route('roles.create')" class="dropdown-item" :class="{ 'active': $page.component === 'Roles/Create' }">
-                                    {{ $page.props.lang.menu.roles.create }}
-                                </Link>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ $page.props.lang.menu.permissions.text }}
-                            </a>
+                        <template v-if="hasRoleOrPermission('admin', 'roles.index') || hasRoleOrPermission('admin', 'roles.create')">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ $page.props.lang.menu.roles.text }}
+                                </a>
 
-                            <div class="dropdown-menu dropdown-menu-start m-0">
-                                <Link :href="route('permissions.index')" class="dropdown-item" :class="{ 'active': $page.component === 'Permissions/Index' }">
-                                    {{ $page.props.lang.menu.permissions.index }}
-                                </Link>
-                            </div>
-                        </li>
+                                <div class="dropdown-menu dropdown-menu-start m-0">
+                                    <template v-if="hasRoleOrPermission('admin', 'roles.index')">
+                                        <Link :href="route('roles.index')" class="dropdown-item" :class="{ 'active': $page.component === 'Roles/Index' }">
+                                            {{ $page.props.lang.menu.roles.index }}
+                                        </Link>
+                                    </template>
+                                    <template v-if="hasRoleOrPermission('admin', 'roles.create')">
+                                        <Link :href="route('roles.create')" class="dropdown-item" :class="{ 'active': $page.component === 'Roles/Create' }">
+                                            {{ $page.props.lang.menu.roles.create }}
+                                        </Link>
+                                    </template>
+                                </div>
+                            </li>
+                        </template>
+
+                        <template v-if="hasRoleOrPermission('admin', 'permissions.index')">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    {{ $page.props.lang.menu.permissions.text }}
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-start m-0">
+                                    <Link :href="route('permissions.index')" class="dropdown-item" :class="{ 'active': $page.component === 'Permissions/Index' }">
+                                        {{ $page.props.lang.menu.permissions.index }}
+                                    </Link>
+                                </div>
+                            </li>
+                        </template>
                     </template>
                 </ul>
 
@@ -101,12 +117,19 @@
 </template>
 
 <script>
-    import { usePage, Link } from '@inertiajs/vue3';
+    import { Link } from '@inertiajs/vue3';
+    import { usePermission } from '../helpers';
+
+    const { hasRoleOrPermission } = usePermission();
 
     export default {
         components: {
-            usePage,
             Link
+        },
+        setup () {
+            return {
+                hasRoleOrPermission
+            };
         },
         mounted () {
             if (this.$page.props.flash.success) {

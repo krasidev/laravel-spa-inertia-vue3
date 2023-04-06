@@ -32,12 +32,16 @@
                             <td>{{ role.updated_at }}</td>
                             <td>
                                 <div v-if="role.readonly == 0" class="btn-group btn-group-sm" role="group">
-                                    <DataTableLink :href="route('roles.edit', {role: role.id})" class="btn">
-                                        <i class="fas fa-edit text-primary"></i>
-                                    </DataTableLink>
-                                    <DataTableLink :href="route('roles.destroy', {role: role.id})" class="btn" action="delete">
-                                        <i class="fas fa-trash text-danger"></i>
-                                    </DataTableLink>
+                                    <template v-if="hasRoleOrPermission('admin', 'roles.edit')">
+                                        <DataTableLink :href="route('roles.edit', {role: role.id})" class="btn">
+                                            <i class="fas fa-edit text-primary"></i>
+                                        </DataTableLink>
+                                    </template>
+                                    <template v-if="hasRoleOrPermission('admin', 'roles.destroy')">
+                                        <DataTableLink :href="route('roles.destroy', {role: role.id})" class="btn" action="delete">
+                                            <i class="fas fa-trash text-danger"></i>
+                                        </DataTableLink>
+                                    </template>
                                 </div>
                             </td>
                         </tr>
@@ -50,9 +54,12 @@
 
 <script>
     import AppLayout from '../../Layouts/AppLayout.vue';
-    import { Head, router } from '@inertiajs/vue3';
+    import { Head } from '@inertiajs/vue3';
     import DataTable from '../../Components/DataTable.vue';
     import DataTableLink from '../../Components/DataTableLink.vue';
+    import { usePermission } from '../../helpers';
+
+    const { hasRoleOrPermission } = usePermission();
 
     export default {
         components: {
@@ -60,6 +67,11 @@
             Head,
             DataTable,
             DataTableLink
+        },
+        setup () {
+            return {
+                hasRoleOrPermission
+            };
         },
         props: {
             lang: Object,
