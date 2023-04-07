@@ -7,7 +7,7 @@
             <div class="card-header bg-transparent">{{ lang.content.register.title }}</div>
 
             <div class="card-body">
-                <form :action="route('register')" @submit.prevent="submit" style="max-width: 100%; width: 360px;">
+                <form @submit.prevent="submit" style="max-width: 100%; width: 360px;">
                     <input type="hidden" name="_token" :value="$page.props.csrf_token">
 
                     <div class="mb-3">
@@ -55,13 +55,12 @@
 
 <script>
     import AuthLayout from '../../Layouts/AuthLayout.vue';
-    import { Head, usePage, Link, router } from '@inertiajs/vue3';
+    import { Head, Link, router } from '@inertiajs/vue3';
 
     export default {
         components: {
             AuthLayout,
             Head,
-            usePage,
             Link
         },
         props: {
@@ -75,7 +74,7 @@
         },
         methods: {
             submit() {
-                router.post('/register', this.user);
+                router.post(route('register'), this.user);
             }
         }
     }

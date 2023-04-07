@@ -99,23 +99,25 @@
                                     <i class="fas fa-user text-dark me-1"></i>
                                     {{ $page.props.lang.menu.profile.edit }}
                                 </Link>
-                                <hr class="dropdown-divider">
-                                <Link :href="route('logout')" method="post" as="button" type="button" class="dropdown-item">
-                                    <i class="fas fa-power-off text-dark me-1"></i>
-                                    {{ $page.props.lang.menu.profile.logout }}
-                                </Link>
+                                <template v-if="route().has('logout')">
+                                    <hr class="dropdown-divider">
+                                    <Link :href="route('logout')" method="post" as="button" type="button" class="dropdown-item">
+                                        <i class="fas fa-power-off text-dark me-1"></i>
+                                        {{ $page.props.lang.menu.logout }}
+                                    </Link>
+                                </template>
                             </div>
                         </li>
                     </template>
                     <template v-else>
-                        <li class="nav-item">
+                        <li v-if="route().has('login')" class="nav-item">
                             <Link :href="route('login')" class="nav-link">
-                                {{ $page.props.lang.content.login.title }}
+                                {{ $page.props.lang.menu.login }}
                             </Link>
                         </li>
-                        <li class="nav-item">
+                        <li v-if="route().has('register')" class="nav-item">
                             <Link :href="route('register')" class="nav-link">
-                                {{ $page.props.lang.content.register.title }}
+                                {{ $page.props.lang.menu.register }}
                             </Link>
                         </li>
                     </template>

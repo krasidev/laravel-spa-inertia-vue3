@@ -1,10 +1,12 @@
 <?php
 
 return [
+    'login' => 'Login',
+    'logout' => 'Logout',
+    'register' => 'Register',
     'profile' => [
         'edit' => 'Profile',
-        'edit-password' => 'Edit password',
-        'logout' => 'Logout'
+        'edit-password' => 'Edit password'
     ],
     'users' => [
         'text' => 'Users',

@@ -10,7 +10,7 @@ return [
         ],
         'buttons' => [
             'login' => 'Login',
-            'logout' => 'Logout'
+            'register' => 'Register'
         ]
     ],
     'register' => [

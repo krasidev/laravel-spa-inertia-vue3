@@ -7,7 +7,7 @@
             <div class="card-header bg-transparent">{{ lang.content.login.title }}</div>
 
             <div class="card-body">
-                <form :action="route('login')" @submit.prevent="submit" style="max-width: 100%; width: 360px;">
+                <form @submit.prevent="submit" style="max-width: 100%; width: 360px;">
                     <input type="hidden" name="_token" :value="$page.props.csrf_token">
 
                     <div class="mb-3">
@@ -38,7 +38,9 @@
 
                     <button type="submit" class="btn btn-outline-primary d-block w-100">{{ lang.content.login.buttons.login }}</button>
 
-                    <Link :href="route('register')" class="btn btn-link d-block">{{ lang.content.register.title }}</Link>
+                    <template v-if="route().has('register')">
+                        <Link :href="route('register')" class="btn btn-link d-block">{{ lang.content.login.buttons.register }}</Link>
+                    </template>
                 </form>
             </div>
         </div>
@@ -47,13 +49,12 @@
 
 <script>
     import AuthLayout from '../../Layouts/AuthLayout.vue';
-    import { Head, usePage, Link, router } from '@inertiajs/vue3';
+    import { Head, Link, router } from '@inertiajs/vue3';
 
     export default {
         components: {
             AuthLayout,
             Head,
-            usePage,
             Link
         },
         props: {
@@ -67,7 +68,7 @@
         },
         methods: {
             submit() {
-                router.post('/login', this.user);
+                router.post(route('login'), this.user);
             }
         }
     }

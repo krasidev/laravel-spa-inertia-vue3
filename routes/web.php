@@ -17,21 +17,36 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Auth::routes([
+const routes = [
     'confirm' => false,
     'reset' => false
-]);
+];
 
 Route::group([
     'prefix' => LaravelLocalization::setLocale(),
     'middleware' => ['localeSessionRedirect', 'localizationRedirect', 'localeViewPath']
 ], function() {
+    Auth::routes(routes);
+
     // Guest users
     Route::middleware('guest')->group(function () {
-        // Overwriting login and register forms
-        Route::inertia('/', 'Auth/Login')->name('login');
-        Route::inertia('/login', 'Auth/Login')->name('login');
-        Route::inertia('/register', 'Auth/Register')->name('register');
+        // Overwriting login forms
+        if (routes['login'] ?? true) {
+            Route::get('/', function () {
+                return redirect()->route('login');
+            });
+
+            Route::inertia('/login', 'Auth/Login', [
+                'lang.content.login' => __('content.login')
+            ])->name('login');
+        }
+
+        // Overwriting register forms
+        if (routes['register'] ?? true) {
+            Route::inertia('/register', 'Auth/Register', [
+                'lang.content.register' => __('content.register')
+            ])->name('register');
+        }
     });
 
     // Auth users

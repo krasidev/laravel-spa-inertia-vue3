@@ -42,9 +42,6 @@ class HandleInertiaRequests extends Middleware
             'app.url' => url('/'),
         ];
 
-        $data['lang.content.login'] = __('content.login');
-        $data['lang.content.register'] = __('content.register');
-
         $data['lang.menu'] = __('menu');
 
         $data['auth.user'] = $request->user()

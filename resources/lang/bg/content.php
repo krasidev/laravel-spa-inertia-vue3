@@ -10,7 +10,7 @@ return [
         ],
         'buttons' => [
             'login' => 'Влизане',
-            'logout' => 'Изход'
+            'register' => 'Регистрация'
         ]
     ],
     'register' => [

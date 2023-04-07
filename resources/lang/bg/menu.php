@@ -1,10 +1,12 @@
 <?php
 
 return [
+    'login' => 'Влизане',
+    'logout' => 'Изход',
+    'register' => 'Регистрация',
     'profile' => [
         'edit' => 'Профил',
-        'edit-password' => 'Редактирай парола',
-        'logout' => 'Изход'
+        'edit-password' => 'Редактирай парола'
     ],
     'users' => [
         'text' => 'Потребители',
