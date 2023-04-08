@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Profile\UpdatePasswordProfileRequest;
 use App\Http\Requests\Profile\UpdateProfileRequest;
+use App\Http\Resources\ProfileResource;
+use App\Http\Resources\RoleResource;
 use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
@@ -19,14 +21,12 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
 
-        $user->role = $user->roles->pluck('id')->first();
-
-        $roles = Role::all();
-
         return Inertia::render('Profile/Edit', [
             'lang.content.profile' => __('content.profile'),
-            'user' => $user->only(['name', 'email', 'role']),
-            'roles' => $roles
+            'user' => collect(new ProfileResource($user))->merge([
+                'role' => $user->roles->pluck('id')->first()
+            ]),
+            'roles' => RoleResource::collection(Role::all())
         ]);
     }
 

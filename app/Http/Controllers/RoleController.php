@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Role\StoreRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
+use App\Http\Resources\PermissionResource;
+use App\Http\Resources\RoleResource;
+use App\Models\Permission;
 use App\Models\Role;
-use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Inertia\Inertia;
-use Spatie\Permission\Models\Permission;
 
 class RoleController extends Controller
 {
@@ -24,11 +25,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
-
         return Inertia::render('Roles/Index', [
             'lang.datatables' => __('datatables'),
-            'roles' => $roles
+            'roles' => RoleResource::collection(Role::all())
         ]);
     }
 
@@ -39,11 +38,9 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permissions = Permission::orderBy('id')->get();
-
         return Inertia::render('Roles/Create', [
             'lang.permissions' => Arr::dot(__('permissions')),
-            'permissions' => $permissions
+            'permissions' => PermissionResource::collection(Permission::all())
         ]);
     }
 
@@ -55,13 +52,13 @@ class RoleController extends Controller
      */
     public function store(StoreRoleRequest $request)
     {
-        $data = $request->only(['name', 'permissionsIds']);
+        $data = $request->only(['name', 'permissions']);
 
         $role = Role::create([
             'name' => $data['name']
         ]);
 
-        $role->syncPermissions($data['permissionsIds'] ?? []);
+        $role->syncPermissions($data['permissions'] ?? []);
 
         return redirect()->route('roles.index')
             ->with('success', [
@@ -78,13 +75,12 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
-        $role->permissionsIds = $role->permissions->pluck('id')->toArray();
-        $permissions = Permission::orderBy('id')->get();
+        $role->load('permissions');
 
         return Inertia::render('Roles/Edit', [
             'lang.permissions' => Arr::dot(__('permissions')),
-            'permissions' => $permissions,
-            'role' => $role
+            'role' => new RoleResource($role),
+            'permissions' => PermissionResource::collection(Permission::all())
         ]);
     }
 
@@ -98,13 +94,13 @@ class RoleController extends Controller
     public function update(UpdateRoleRequest $request, Role $role)
     {
         if ($role->readonly == 0) {
-            $data = $request->only(['name', 'permissionsIds']);
+            $data = $request->only(['name', 'permissions']);
 
             $role->update([
                 'name' => $data['name']
             ]);
 
-            $role->syncPermissions($data['permissionsIds'] ?? []);
+            $role->syncPermissions($data['permissions'] ?? []);
 
             return redirect()->route('roles.index')
                 ->with('success', [

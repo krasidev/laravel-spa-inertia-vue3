@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PermissionResource;
+use App\Http\Resources\RoleResource;
 use App\Models\Permission;
 use App\Models\Role;
 use Illuminate\Http\Request;
@@ -23,11 +25,9 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $permissions = Permission::all();
-
         return Inertia::render('Permissions/Index', [
             'lang.datatables' => __('datatables'),
-            'permissions' => $permissions
+            'permissions' => PermissionResource::collection(Permission::all())
         ]);
     }
 
@@ -39,12 +39,11 @@ class PermissionController extends Controller
      */
     public function edit(Permission $permission)
     {
-        $permission->rolesIds = $permission->roles->pluck('id')->toArray();
-        $roles = Role::where('readonly', 0)->orderBy('id')->get();
+        $permission->load('roles');
 
         return Inertia::render('Permissions/Edit', [
-            'permission' => $permission,
-            'roles' => $roles,
+            'permission' => new PermissionResource($permission),
+            'roles' => RoleResource::collection(Role::where('readonly', 0)->get())
         ]);
     }
 
@@ -57,10 +56,10 @@ class PermissionController extends Controller
      */
     public function update(Request $request, Permission $permission)
     {
-        $data = $request->only(['rolesIds']);
+        $data = $request->only(['roles']);
 
         $readonlyRolesIds = $permission->roles->where('readonly', 1)->pluck('id')->toArray();
-        $rolesIds = Role::whereIn('id', $data['rolesIds'] ?? [])->where('readonly', 0)->pluck('id')->toArray();
+        $rolesIds = Role::whereIn('id', $data['roles'] ?? [])->where('readonly', 0)->pluck('id')->toArray();
 
         $permission->syncRoles(array_merge(
             $readonlyRolesIds,

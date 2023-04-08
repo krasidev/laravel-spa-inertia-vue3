@@ -18,7 +18,7 @@
                                 <div class="col-12 col-sm-4 mb-3">
                                     <label for="name" class="form-label">{{ lang.content.profile.labels.name }}: <span class="text-danger">*</span></label>
 
-                                    <input type="text" v-model="user.name" id="name" class="form-control" :class="{ 'is-invalid': errors.name }" />
+                                    <input type="text" v-model="form.name" id="name" class="form-control" :class="{ 'is-invalid': errors.name }" />
 
                                     <div class="invalid-feedback" v-if="errors.name">
                                         <strong>{{ errors.name }}</strong>
@@ -28,7 +28,7 @@
                                 <div class="col-12 col-sm-4 mb-3">
                                     <label for="email" class="form-label">{{ lang.content.profile.labels.email }}: <span class="text-danger">*</span></label>
 
-                                    <input type="email" v-model="user.email" id="email" class="form-control" :class="{ 'is-invalid': errors.email }" />
+                                    <input type="email" v-model="form.email" id="email" class="form-control" :class="{ 'is-invalid': errors.email }" />
 
                                     <div class="invalid-feedback" v-if="errors.email">
                                         <strong>{{ errors.email }}</strong>
@@ -38,7 +38,7 @@
                                 <div class="col-12 col-sm-4 mb-3">
                                     <label for="role" class="form-label">{{ lang.content.profile.labels.role }}: <span class="text-danger">*</span></label>
 
-                                    <select v-model="user.role" id="role" class="form-control" :class="{ 'is-invalid': errors.role }">
+                                    <select v-model="form.role" id="role" class="form-control" :class="{ 'is-invalid': errors.role }">
                                         <option value="">{{ lang.content.profile.placeholders.role }}</option>
                                         <option v-for="role in roles" :value="role.id">{{ role.name }}</option>
                                     </select>
@@ -70,7 +70,7 @@
                                 <div class="col-12 col-sm-4 mb-3">
                                     <label for="current-password" class="form-label">{{ lang.content.profile.labels.current_password }}: <span class="text-danger">*</span></label>
 
-                                    <input type="password" v-model="user.current_password" id="current-password" class="form-control" :class="{ 'is-invalid': errors.current_password }" />
+                                    <input type="password" v-model="form.current_password" id="current-password" class="form-control" :class="{ 'is-invalid': errors.current_password }" />
 
                                     <div class="invalid-feedback" v-if="errors.current_password">
                                         <strong>{{ errors.current_password }}</strong>
@@ -80,7 +80,7 @@
                                 <div class="col-12 col-sm-4 mb-3">
                                     <label for="password" class="form-label">{{ lang.content.profile.labels.password }}: <span class="text-danger">*</span></label>
 
-                                    <input type="password" v-model="user.password" id="password" class="form-control" :class="{ 'is-invalid': errors.password }" />
+                                    <input type="password" v-model="form.password" id="password" class="form-control" :class="{ 'is-invalid': errors.password }" />
 
                                     <div class="invalid-feedback" v-if="errors.password">
                                         <strong>{{ errors.password }}</strong>
@@ -90,7 +90,7 @@
                                 <div class="col-12 col-sm-4 mb-3">
                                     <label for="password-confirm" class="form-label">{{ lang.content.profile.labels.password_confirmation }}: <span class="text-danger">*</span></label>
 
-                                    <input type="password" v-model="user.password_confirmation" id="password-confirm" class="form-control" />
+                                    <input type="password" v-model="form.password_confirmation" id="password-confirm" class="form-control" />
                                 </div>
                             </div>
 
@@ -116,18 +116,27 @@
         },
         props: {
             lang: Object,
-            roles: Object,
+            roles: Array,
             user: Object,
             errors: Object,
         },
+        data () {
+            return {
+                form: {
+                    name: this.user.name,
+                    email: this.user.email,
+                    role: this.user.role
+                }
+            };
+        },
         methods: {
             update () {
-                router.put(route('profile.update'), this.user, {
+                router.put(route('profile.update'), this.form, {
                     preserveState: false
                 });
             },
             updatePassword () {
-                router.put(route('profile.update-password'), this.user, {
+                router.put(route('profile.update-password'), this.form, {
                     preserveState: false
                 });
             }

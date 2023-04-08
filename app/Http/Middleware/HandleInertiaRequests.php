@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Http\Resources\ProfileResource;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -45,10 +46,7 @@ class HandleInertiaRequests extends Middleware
         $data['lang.menu'] = __('menu');
 
         $data['auth.user'] = $request->user()
-            ? array_merge($request->user()->only('id', 'name', 'email'), [
-                'roles' => $request->user()->getRoleNames(),
-                'permissions' => $request->user()->getAllPermissions()->pluck('name')
-            ])
+            ? new ProfileResource($request->user())
             : null;
 
         $data['lang.messages.success'] = __('messages.success');

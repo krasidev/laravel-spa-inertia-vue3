@@ -17,7 +17,7 @@
                 <form id="usersTableFilters" class="collapse" @submit.prevent="submit">
                     <div class="row">
                         <div class="col-12 col-sm-4 mb-3">
-                            <select v-model="filter.trashed" @change="submit()" class="form-control select2 users-table-filters">
+                            <select v-model="filters.trashed" @change="submit()" class="form-control select2 users-table-filters">
                                 <option value="0">{{ lang.content.users.table.filters.trashed.options.all }}</option>
                                 <option value="1">{{ lang.content.users.table.filters.trashed.options.deleted }}</option>
                             </select>
@@ -33,7 +33,7 @@
                             <th>{{ lang.content.users.table.headers.email }}</th>
                             <th>{{ lang.content.users.table.headers.roles }}</th>
                             <th>{{ lang.content.users.table.headers.created_at }}</th>
-                            <th v-if="filter.trashed == 0">{{ lang.content.users.table.headers.updated_at }}</th>
+                            <th v-if="filters.trashed == 0">{{ lang.content.users.table.headers.updated_at }}</th>
                             <th v-else>{{ lang.content.users.table.headers.deleted_at }}</th>
                             <th>{{ lang.content.users.table.headers.actions }}</th>
                         </tr>
@@ -43,12 +43,12 @@
                             <td>{{ user.id }}</td>
                             <td>{{ user.name }}</td>
                             <td>{{ user.email }}</td>
-                            <td>{{ user.roles_name }}</td>
+                            <td>{{ user.roles.map((role) => role.name).join(', ') }}</td>
                             <td>{{ user.created_at }}</td>
-                            <td v-if="filter.trashed == 0">{{ user.updated_at }}</td>
+                            <td v-if="filters.trashed == 0">{{ user.updated_at }}</td>
                             <td v-else>{{ user.deleted_at }}</td>
                             <td>
-                                <div v-if="user.is_trashed" class="btn-group btn-group-sm" role="group">
+                                <div v-if="user.trashed" class="btn-group btn-group-sm" role="group">
                                     <template v-if="hasRoleOrPermission('admin', 'users.restore')">
                                         <DataTableLink :href="route('users.restore', {id: user.id, trashed: 1})" class="btn" action="restore">
                                             <i class="fas fa-trash-restore text-success"></i>
@@ -104,12 +104,12 @@
         },
         props: {
             lang: Object,
-            filter: Object,
+            filters: Object,
             users: Object,
         },
         methods: {
             submit () {
-                router.get(route('users.index'), this.filter);
+                router.get(route('users.index'), this.filters);
             }
         }
     }

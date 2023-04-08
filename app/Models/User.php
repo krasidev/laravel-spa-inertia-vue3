@@ -46,24 +46,4 @@ class User extends Authenticatable
         'updated_at' => 'datetime:Y-m-d H:i:s',
         'deleted_at' => 'datetime:Y-m-d H:i:s'
     ];
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = [
-        'is_trashed',
-        'roles_name'
-    ];
-
-    public function getIsTrashedAttribute()
-    {
-        return $this->trashed();
-    }
-
-    public function getRolesNameAttribute()
-    {
-        return $this->roles->pluck('name')->implode(', ');
-    }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Http\Resources\RoleResource;
+use App\Http\Resources\UserResource;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -26,14 +28,16 @@ class UserController extends Controller
     {
         $users = User::query();
 
-        if ($filter['trashed'] = $request->get('trashed', 0)) {
+        $users->with('roles');
+
+        if ($filters['trashed'] = $request->get('trashed', 0)) {
             $users->onlyTrashed();
         }
 
         return Inertia::render('Users/Index', [
             'lang.datatables' => __('datatables'),
-            'filter' => $filter,
-            'users' => $users->get()
+            'filters' => $filters,
+            'users' => UserResource::collection($users->get())
         ]);
     }
 
@@ -44,9 +48,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::all();
-
-        return Inertia::render('Users/Create', compact('roles'));
+        return Inertia::render('Users/Create', [
+            'roles' => RoleResource::collection(Role::all())
+        ]);
     }
 
     /**
@@ -80,11 +84,12 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $user->role = $user->roles->pluck('id')->first();
+        $user->load('roles');
 
-        $roles = Role::all();
-
-        return Inertia::render('Users/Edit', compact('user', 'roles'));
+        return Inertia::render('Users/Edit', [
+            'user' => new UserResource($user),
+            'roles' => RoleResource::collection(Role::all())
+        ]);
     }
 
     /**

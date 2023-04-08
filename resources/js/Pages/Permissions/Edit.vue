@@ -32,7 +32,7 @@
                         <div class="row">
                             <div v-for="role in roles" class="col-12 col-sm-4 mb-3">
                                 <div class="form-check">
-                                    <input type="checkbox" v-model="permission.rolesIds" :value="role.id" class="form-check-input" :id="'role-' + role.id" />
+                                    <input type="checkbox" v-model="form.roles" :value="role.id" class="form-check-input" :id="'role-' + role.id" />
                                     <label class="form-check-label" :for="'role-' + role.id">
                                         {{ role.name }}
                                     </label>
@@ -62,11 +62,18 @@
         props: {
             lang: Object,
             permission: Object,
-            roles: Object
+            roles: Array
+        },
+        data () {
+            return {
+                form: {
+                    roles: this.permission.roles.map((role) => role.id)
+                }
+            };
         },
         methods: {
             submit () {
-                router.put(route('permissions.update', {permission: this.permission.id}), this.permission);
+                router.put(route('permissions.update', {permission: this.permission.id}), this.form);
             }
         }
     }

@@ -80,10 +80,10 @@
 
                         <div class="dropdown-menu dropdown-menu-start m-0">
                             <template v-for="(properties, localeCode) in $page.props.localesOrder">
-                                <Link :href="properties.url" class="dropdown-item" :class="{ 'disabled': $page.props.currentLocale == localeCode }">
+                                <a :href="properties.url" class="dropdown-item" :class="{ 'disabled': $page.props.currentLocale == localeCode }">
                                     {{ properties.native }}
                                     (<span class="text-uppercase">{{ localeCode }}</span>)
-                                </Link>
+                                </a>
                             </template>
                         </div>
                     </li>
