@@ -12,6 +12,11 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <!-- Left Side Of Navbar -->
                 <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <Link href="/dashboard" class="nav-link" :class="{ 'active': $page.component === 'Dashboard' }">
+                            {{ $page.props.lang.menu.dashboard }}
+                        </Link>
+                    </li>
                     <template v-if="$page.props.auth.user">
                         <template v-if="hasRoleOrPermission('admin', 'users.index') || hasRoleOrPermission('admin', 'users.create')">
                             <li class="nav-item dropdown">
@@ -95,7 +100,7 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end m-0" aria-labelledby="navbarDropdown">
-                                <Link :href="route('profile.edit')" class="dropdown-item">
+                                <Link :href="route('profile.edit')" class="dropdown-item" :class="{ 'active': $page.component === 'Profile/Edit' }">
                                     <i class="fas fa-user text-dark me-1"></i>
                                     {{ $page.props.lang.menu.profile.edit }}
                                 </Link>

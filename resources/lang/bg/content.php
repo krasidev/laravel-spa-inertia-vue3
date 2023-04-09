@@ -42,6 +42,9 @@ return [
             'update-password' => 'Обнови парола'
         ]
     ],
+    'dashboard' => [
+        'content' => 'Вие сте влезли!'
+    ],
     'users' => [
         'table' => [
             'filters' => [

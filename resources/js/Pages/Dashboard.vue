@@ -1,13 +1,13 @@
 <template>
     <AppLayout>
         <Head>
-            <title>Dashboard</title>
+            <title>{{ lang.menu.dashboard }}</title>
         </Head>
         <div class="card shadow-sm">
-            <div class="card-header bg-transparent">Dashboard</div>
+            <div class="card-header bg-transparent">{{ lang.menu.dashboard }}</div>
 
             <div class="card-body">
-                You are logged in!
+                {{ lang.content.dashboard.content }}
             </div>
         </div>
     </AppLayout>
@@ -21,6 +21,9 @@
         components: {
             AppLayout,
             Head
+        },
+        props: {
+            lang: Object
         }
     }
 </script>

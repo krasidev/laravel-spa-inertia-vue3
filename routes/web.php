@@ -52,7 +52,9 @@ Route::group([
     // Auth users
     Route::middleware('auth')->group(function () {
         // Home
-        Route::inertia('/home', 'Home');
+        Route::inertia('/dashboard', 'Dashboard', [
+            'lang.content.dashboard' => __('content.dashboard')
+        ]);
 
         // Profile
         Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -8,6 +8,7 @@ return [
         'edit' => 'Profile',
         'edit-password' => 'Edit password'
     ],
+    'dashboard' => 'Dashboard',
     'users' => [
         'text' => 'Users',
         'index' => 'List Users',

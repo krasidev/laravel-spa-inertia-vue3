@@ -42,6 +42,9 @@ return [
             'update-password' => 'Update Password'
         ]
     ],
+    'dashboard' => [
+        'content' => 'You are logged in!'
+    ],
     'users' => [
         'table' => [
             'filters' => [
